@@ -5,7 +5,6 @@ import logging
 from enum import Enum
 from elasticsearch import helpers as eshelpers
 from elasticsearch import Elasticsearch, RequestsHttpConnection
-from requests_kerberos import HTTPKerberosAuth, DISABLED
 import datetime
 import socket
 from threading import Timer
@@ -124,12 +123,6 @@ class CMRESHandler(logging.Handler):
                                  use_ssl=self.use_ssl,
                                  verify_certs=self.verify_certs,
                                  connection_class=RequestsHttpConnection)
-        elif self.auth_type == CMRESHandler.AuthType.KERBEROS_AUTH:
-            return Elasticsearch(hosts=self.hosts,
-                                 use_ssl=self.use_ssl,
-                                 verify_certs=self.verify_certs,
-                                 connection_class=RequestsHttpConnection,
-                                 http_auth=HTTPKerberosAuth(mutual_authentication=DISABLED))
 
     def test_es_source(self):
         """ Returns True if the handler can ping the Elasticsearch servers
